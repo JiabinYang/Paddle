@@ -33,8 +33,7 @@ function yellow(){
 }
 
 path='http://paddlepaddle.org/download?url='
-#release_version=`curl -s https://pypi.org/project/paddlepaddle/|grep -E "/project/paddlepaddle/"|grep "release"|awk -F '/' '{print $(NF-1)}'|head -1`
-release_version=1.2.0
+release_version=`curl -s https://pypi.org/project/paddlepaddle/|grep -E "/project/paddlepaddle/"|grep "release"|awk -F '/' '{print $(NF-1)}'|head -1`
 python_list=(
 "27"
 "35"
@@ -726,7 +725,7 @@ gpu_list=(
   echo
   checkLinuxPaddleVersion
   echo
-  echo "Step 5. 检测pip版本"
+  echo "Step 5. 检测Python版本"
   echo
   checkLinuxPython
   echo
