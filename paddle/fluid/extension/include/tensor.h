@@ -21,6 +21,9 @@ limitations under the License. */
 #include "paddle/fluid/extension/include/place.h"
 
 namespace paddle {
+
+cudaStream_t GetCurrentStream(const paddle::PlaceType& place);
+
 namespace framework {
 class CustomTensorUtils;
 }  // namespace framework

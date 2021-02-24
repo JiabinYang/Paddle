@@ -23,6 +23,10 @@ limitations under the License. */
 #include "paddle/fluid/platform/enforce.h"
 #include "paddle/fluid/platform/float16.h"
 #include "paddle/fluid/platform/transform.h"
+#include <cuda_runtime.h>
+#include <cuda_runtime.h>
+#include "paddle/fluid/platform/device_context.h"
+#include "paddle/fluid/extension/include/utils.h"
 
 namespace paddle {
 
@@ -380,6 +384,15 @@ int64_t Tensor::size() const {
   GET_CASTED_TENSOR;
   return tensor->numel();
 }
+
+
+cudaStream_t GetCurrentStream(const paddle::PlaceType& place){
+  platform::Place inner_place = paddle::framework::CustomOpUtils::ConvertEnumPlaceToInnerPlace(place);
+  platform::DeviceContextPool& pool = platform::DeviceContextPool::Instance();
+  auto* dev_ctx = pool.Get(inner_place);
+  return dynamic_cast<platform::CUDADeviceContext *>(dev_ctx)->stream();
+}
+
 
 namespace framework {
 

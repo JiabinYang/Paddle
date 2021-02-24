@@ -15,13 +15,3 @@ void RegisterAllCustomOperator();
 void LoadCustomOperatorLib(const std::string& dso_name);
 
 }
-
-#ifdef PADDLE_WITH_CUDA
-
-#include <cuda_runtime.h>
-
-namespace paddle{
-  cudaStream_t GetCurrentStream(const paddle::PlaceType& place);
-}
-
-#endif
