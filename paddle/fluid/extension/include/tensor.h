@@ -19,6 +19,7 @@ limitations under the License. */
 #include "paddle/fluid/extension/include/dll_decl.h"
 #include "paddle/fluid/extension/include/dtype.h"
 #include "paddle/fluid/extension/include/place.h"
+#include <cuda_runtime.h>
 
 namespace paddle {
 
