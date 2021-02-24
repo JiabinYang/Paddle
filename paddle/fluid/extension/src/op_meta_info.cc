@@ -83,17 +83,17 @@ OpMetaInfoBuilder& OpMetaInfoBuilder::Outputs(
   return *this;
 }
 
-OpMetaInfoBuilder& OpMetaInfoBuilder::SetKernelFn(KernelFunc&& func) {
+OpMetaInfoBuilder& OpMetaInfoBuilder::SetKernelFn(KernelFunc func) {
   info_ptr_->SetKernelFn(std::forward<KernelFunc>(func));
   return *this;
 }
 
-OpMetaInfoBuilder& OpMetaInfoBuilder::SetInferShapeFn(InferShapeFunc&& func) {
+OpMetaInfoBuilder& OpMetaInfoBuilder::SetInferShapeFn(InferShapeFunc func) {
   info_ptr_->SetInferShapeFn(std::forward<InferShapeFunc>(func));
   return *this;
 }
 
-OpMetaInfoBuilder& OpMetaInfoBuilder::SetInferDtypeFn(InferDtypeFunc&& func) {
+OpMetaInfoBuilder& OpMetaInfoBuilder::SetInferDtypeFn(InferDtypeFunc func) {
   info_ptr_->SetInferDtypeFn(std::forward<InferDtypeFunc>(func));
   return *this;
 }
@@ -127,10 +127,17 @@ cudaStream_t GetCurrentStream(const paddle::PlaceType& place){
 #endif
 }  // namespace paddle
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 
+#ifndef _WIN32
+// C-API to get global OpMetaInfoMap.
 paddle::OpMetaInfoMap& PD_GetOpMetaInfoMap() {
   return paddle::OpMetaInfoMap::Instance();
 }
+#endif
 
+#ifdef __cplusplus
 }  // end extern "C"
+#endif
