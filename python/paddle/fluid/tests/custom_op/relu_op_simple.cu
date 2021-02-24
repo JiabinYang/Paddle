@@ -54,7 +54,7 @@ std::vector<paddle::Tensor> relu_cuda_forward(const paddle::Tensor& x) {
   int grid = (numel + block - 1) / block;
   PD_DISPATCH_FLOATING_TYPES(
       x.type(), "relu_cuda_forward_kernel", ([&] {
-        relu_cuda_forward_kernel<data_t><<<grid, block>>>(
+        relu_cuda_forward_kernel<data_t><<<grid, block, paddle::GetCurrentStream()>>>(
             x.data<data_t>(), out.mutable_data<data_t>(x.place()), numel);
       }));
   // fake multi output: Fake_1
@@ -82,7 +82,7 @@ std::vector<paddle::Tensor> relu_cuda_backward(const paddle::Tensor& x,
   int grid = (numel + block - 1) / block;
   PD_DISPATCH_FLOATING_TYPES(
       out.type(), "relu_cuda_backward_kernel", ([&] {
-        relu_cuda_backward_kernel<data_t><<<grid, block>>>(
+        relu_cuda_backward_kernel<data_t><<<grid, block, paddle::GetCurrentStream()>>>(
             grad_out.data<data_t>(),
             out.data<data_t>(),
             grad_x.mutable_data<data_t>(x.place()),

@@ -35,7 +35,10 @@ class CustomTensorUtils {
   /// Use this to pass tensor from op to op
   /// \return void.
   static void ShareDataFrom(const void* src, const Tensor& dst);
+};
 
+class CustomOpUtils{
+ public:
   static framework::proto::VarType::Type ConvertEnumDTypeToInnerDType(
       const paddle::DataType& dtype) {
     switch (dtype) {

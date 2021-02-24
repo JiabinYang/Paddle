@@ -12,13 +12,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-#include "paddle/fluid/extension/include/op_meta_info.h"
-
-#include <string>
 #include <unordered_map>
 #include <vector>
-
 #include "paddle/fluid/framework/custom_operator.h"
+#include "paddle/fluid/framework/custom_tensor_utils.h"
+#include "paddle/fluid/extension/include/op_meta_info.h"
+#ifdef PADDLE_WITH_CUDA
+#include <cuda_runtime.h>
+#include "paddle/fluid/platform/device_context.h"
+#include "paddle/fluid/extension/include/utils.h"
+#endif
+
+
 
 namespace paddle {
 
@@ -112,6 +117,14 @@ void RegisterAllCustomOperator() {
 void LoadCustomOperatorLib(const std::string& dso_name) {
   paddle::framework::LoadOpMetaInfoAndRegisterOp(dso_name);
 }
+#ifdef PADDLE_WITH_CUDA
+cudaStream_t GetCurrentStream(const paddle::PlaceType& place){
+  platform::Place inner_place = paddle::framework::CustomOpUtils::ConvertEnumPlaceToInnerPlace(place);
+  platform::DeviceContextPool& pool = platform::DeviceContextPool::Instance();
+  auto* dev_ctx = pool.Get(inner_place);
+  return dynamic_cast<platform::CUDADeviceContext *>(dev_ctx)->stream();
+}
+#endif
 }  // namespace paddle
 
 extern "C" {

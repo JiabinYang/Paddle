@@ -93,7 +93,7 @@ static void RunKernelFunc(const framework::ExecutionContext& ctx,
                       platform::errors::InvalidArgument(
                           "Input tensor (%s) is not initialized."));
     auto custom_in = paddle::Tensor(
-        CustomTensorUtils::ConvertInnerPlaceToEnumPlace(x->place()));
+        CustomOpUtils::ConvertInnerPlaceToEnumPlace(x->place()));
     CustomTensorUtils::ShareDataFrom(static_cast<const void*>(x), custom_in);
     custom_ins.emplace_back(custom_in);
   }
@@ -305,7 +305,7 @@ void RegisterOperatorKernelWithPlace(const std::string& name,
                                      const std::vector<std::string>& inputs,
                                      const std::vector<std::string>& outputs) {
   OpKernelType key(type,
-                   CustomTensorUtils::ConvertEnumPlaceToInnerPlace(place));
+                   CustomOpUtils::ConvertEnumPlaceToInnerPlace(place));
   VLOG(1) << "Custom Operator: op kernel key: " << key;
   OperatorWithKernel::AllOpKernels()[name][key] =
       [kernel_func, inputs, outputs](const framework::ExecutionContext& ctx) {
@@ -411,7 +411,7 @@ void RegisterOperatorWithMetaInfo(
     for (auto& in_name : op_inputs) {
       auto dtype = ctx->GetInputDataType(in_name);
       input_dtypes.emplace_back(
-          CustomTensorUtils::ConvertInnerDTypeToEnumDType(dtype));
+          CustomOpUtils::ConvertInnerDTypeToEnumDType(dtype));
     }
 
     VLOG(1) << "Custom Operator: InferDtype - infer output dtype.";
@@ -421,7 +421,7 @@ void RegisterOperatorWithMetaInfo(
     for (size_t i = 0; i < op_outputs.size(); ++i) {
       ctx->SetOutputDataType(
           op_outputs[i],
-          CustomTensorUtils::ConvertEnumDTypeToInnerDType(output_dtypes[i]));
+          CustomOpUtils::ConvertEnumDTypeToInnerDType(output_dtypes[i]));
     }
   };
 

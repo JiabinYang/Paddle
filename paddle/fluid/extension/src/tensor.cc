@@ -308,7 +308,7 @@ Tensor Tensor::cast(const DataType &target_type) const {
   auto ctx = pool.Get(tensor->place());
   auto src_type = tensor->type();
   auto dst_type =
-      framework::CustomTensorUtils::ConvertEnumDTypeToInnerDType(target_type);
+      framework::CustomOpUtils::ConvertEnumDTypeToInnerDType(target_type);
   switch (src_type) {
     case framework::proto::VarType::FP16:
       framework::VisitDataType(
