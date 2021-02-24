@@ -107,17 +107,6 @@ OpMetaInfoBuilder& OpMetaInfoBuilder::SetBackwardOp(
   return *this;
 }
 
-/////////////////////// Op register API /////////////////////////
-
-void RegisterAllCustomOperator() {
-  auto& op_meta_info_map = OpMetaInfoMap::Instance();
-  framework::RegisterOperatorWithMetaInfoMap(op_meta_info_map);
-}
-
-void LoadCustomOperatorLib(const std::string& dso_name) {
-  paddle::framework::LoadOpMetaInfoAndRegisterOp(dso_name);
-}
-
 }  // namespace paddle
 
 #ifdef __cplusplus

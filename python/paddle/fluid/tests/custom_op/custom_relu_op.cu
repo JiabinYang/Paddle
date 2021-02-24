@@ -42,9 +42,12 @@ std::vector<paddle::Tensor> relu_cuda_forward(const paddle::Tensor& x) {
   int numel = x.size();
   int block = 512;
   int grid = (numel + block - 1) / block;
+
+  auto stream = paddle::GetCurrentStream(paddle::PlaceType::kGPU)
+
   PD_DISPATCH_FLOATING_TYPES(
       x.type(), "relu_cuda_forward_kernel", ([&] {
-        relu_cuda_forward_kernel<data_t><<<grid, block, 0, paddle::GetCurrentStream(paddle::PlaceType::kGPU)>>>(
+        relu_cuda_forward_kernel<data_t><<<grid, block, 0, stream>>>(
             x.data<data_t>(), out.mutable_data<data_t>(x.place()), numel);
       }));
 
@@ -60,9 +63,12 @@ std::vector<paddle::Tensor> relu_cuda_backward(const paddle::Tensor& x,
   int numel = out.size();
   int block = 512;
   int grid = (numel + block - 1) / block;
+
+  auto stream = paddle::GetCurrentStream(paddle::PlaceType::kGPU);
+
   PD_DISPATCH_FLOATING_TYPES(
       out.type(), "relu_cuda_backward_kernel", ([&] {
-        relu_cuda_backward_kernel<data_t><<<grid, block, 0, paddle::GetCurrentStream(paddle::PlaceType::kGPU)>>>(
+        relu_cuda_backward_kernel<data_t><<<grid, block, 0, stream>>>(
             grad_out.data<data_t>(),
             out.data<data_t>(),
             grad_x.mutable_data<data_t>(x.place()),

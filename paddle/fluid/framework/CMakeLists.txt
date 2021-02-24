@@ -368,7 +368,7 @@ endif()
 set(PADDLE_CUSTOM_OP_MODULES custom_tensor op_meta_info custom_operator layer)
 
 cc_library(paddle_custom_op_shared
-    SHARED SRCS custom_operator.cc ../extension/src/tensor.cc ../extension/src/op_meta_info.cc
+    SHARED SRCS custom_operator.cc ../extension/src/tensor.cc ../extension/src/op_meta_info.cc ../extension/src/utils.cc
     ${CMAKE_SOURCE_DIR}/paddle/fluid/imperative/layer.cc
     DEPS ${PADDLE_CUSTOM_OP_MODULES})
 get_property(os_dependency_modules GLOBAL PROPERTY OS_DEPENDENCY_MODULES)
