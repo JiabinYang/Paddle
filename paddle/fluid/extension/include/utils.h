@@ -1,6 +1,7 @@
 #pragma once
 
 #include "paddle/fluid/extension/include/tensor.h"
+namespace paddle{
 
 /////////////////////// Op register API /////////////////////////
 
@@ -13,10 +14,14 @@ void RegisterAllCustomOperator();
 // Operator into it
 void LoadCustomOperatorLib(const std::string& dso_name);
 
+}
+
 #ifdef PADDLE_WITH_CUDA
 
 #include <cuda_runtime.h>
 
-cudaStream_t GetCurrentStream();
+namespace paddle{
+  cudaStream_t GetCurrentStream();
+}
 
 #endif
