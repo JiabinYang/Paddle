@@ -21,7 +21,7 @@ void LoadCustomOperatorLib(const std::string& dso_name);
 #include <cuda_runtime.h>
 
 namespace paddle{
-  cudaStream_t GetCurrentStream();
+  cudaStream_t GetCurrentStream(const paddle::PlaceType& place);
 }
 
 #endif
