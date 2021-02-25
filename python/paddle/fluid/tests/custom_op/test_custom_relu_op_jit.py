@@ -52,7 +52,7 @@ class TestJITLoad(unittest.TestCase):
         # self.dtypes = ['float32', 'float64']
         # self.devices = ['cpu', 'gpu']
         self.dtypes = ['float32']
-        self.devices = ['cpu']
+        self.devices = ['gpu']
 
     # def test_static(self):
     #     for device in self.devices:
