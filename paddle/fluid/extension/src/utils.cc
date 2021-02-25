@@ -17,6 +17,7 @@
 #include "paddle/fluid/framework/custom_operator.h"
 #include "paddle/fluid/framework/custom_tensor_utils.h"
 #ifdef PADDLE_WITH_CUDA
+#include "glog/logging.h"
 #include "paddle/fluid/extension/include/utils.h"
 #include "paddle/fluid/platform/device_context.h"
 #endif
@@ -36,6 +37,7 @@ void LoadCustomOperatorLib(const std::string& dso_name) {
 /////////////////////// Op Get Stream API /////////////////////////
 #ifdef PADDLE_WITH_CUDA
 cudaStream_t GetCurrentStream(const paddle::PlaceType& place) {
+  VLOG(0) << "Call Get Current Stream";
   platform::Place inner_place =
       paddle::framework::CustomOpUtils::ConvertEnumPlaceToInnerPlace(place);
   platform::DeviceContextPool& pool = platform::DeviceContextPool::Instance();
