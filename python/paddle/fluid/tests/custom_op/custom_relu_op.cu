@@ -44,7 +44,7 @@ std::vector<paddle::Tensor> relu_cuda_forward(const paddle::Tensor& x) {
   int block = 512;
   int grid = (numel + block - 1) / block;
 
-  paddle::GetCurrentStream(paddle::PlaceType::kGPU);
+  //  paddle::GetCurrentStream(paddle::PlaceType::kGPU);
 
   PD_DISPATCH_FLOATING_TYPES(
       x.type(), "relu_cuda_forward_kernel", ([&] {

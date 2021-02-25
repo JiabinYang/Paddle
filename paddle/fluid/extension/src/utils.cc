@@ -37,7 +37,7 @@ void LoadCustomOperatorLib(const std::string& dso_name) {
 /////////////////////// Op Get Stream API /////////////////////////
 #ifdef PADDLE_WITH_CUDA
 cudaStream_t GetCurrentStream(const paddle::PlaceType& place) {
-  VLOG(0) << "Call Get Current Stream";
+  VLOG(0) << "Call GetCurrentStream";
   platform::Place inner_place =
       paddle::framework::CustomOpUtils::ConvertEnumPlaceToInnerPlace(place);
   platform::DeviceContextPool& pool = platform::DeviceContextPool::Instance();
