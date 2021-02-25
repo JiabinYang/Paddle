@@ -26,6 +26,7 @@ limitations under the License. */
 #include <vector>
 
 #include "paddle/fluid/extension/include/tensor.h"
+#include "paddle/fluid/extension/include/utils.h"
 #include "paddle/fluid/framework/attribute.h"
 #include "paddle/fluid/framework/c/c_api.h"
 #include "paddle/fluid/framework/custom_tensor_utils.h"
@@ -84,7 +85,13 @@ static void RunKernelFunc(const framework::ExecutionContext& ctx,
                           const std::vector<std::string>& outputs) {
   VLOG(1) << "Custom Operator: Start run KernelFunc.";
   std::vector<paddle::Tensor> custom_ins;
-  for (auto& in_name : inputs) {
+
+#ifdef PADDLE_WITH_CUDA
+  VLOG(1) << "Call GetCurrentStream";
+  paddle::GetCurrentStream(paddle::PlaceType::kGPU)
+#endif
+
+      for (auto& in_name : inputs) {
     VLOG(1) << "Custom Operator: input name - " << in_name;
     auto* x = ctx.Input<Tensor>(in_name);
     PADDLE_ENFORCE_NOT_NULL(x, platform::errors::NotFound(
@@ -92,8 +99,8 @@ static void RunKernelFunc(const framework::ExecutionContext& ctx,
     PADDLE_ENFORCE_EQ(x->IsInitialized(), true,
                       platform::errors::InvalidArgument(
                           "Input tensor (%s) is not initialized."));
-    auto custom_in = paddle::Tensor(
-        CustomOpUtils::ConvertInnerPlaceToEnumPlace(x->place()));
+    auto custom_in =
+        paddle::Tensor(CustomOpUtils::ConvertInnerPlaceToEnumPlace(x->place()));
     CustomTensorUtils::ShareDataFrom(static_cast<const void*>(x), custom_in);
     custom_ins.emplace_back(custom_in);
   }
@@ -304,8 +311,7 @@ void RegisterOperatorKernelWithPlace(const std::string& name,
                                      const PlaceType& place,
                                      const std::vector<std::string>& inputs,
                                      const std::vector<std::string>& outputs) {
-  OpKernelType key(type,
-                   CustomOpUtils::ConvertEnumPlaceToInnerPlace(place));
+  OpKernelType key(type, CustomOpUtils::ConvertEnumPlaceToInnerPlace(place));
   VLOG(1) << "Custom Operator: op kernel key: " << key;
   OperatorWithKernel::AllOpKernels()[name][key] =
       [kernel_func, inputs, outputs](const framework::ExecutionContext& ctx) {
