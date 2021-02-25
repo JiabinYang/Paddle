@@ -322,7 +322,8 @@ configure_file(commit.h.in commit.h)
 
 cc_library(custom_tensor SRCS ../extension/src/tensor.cc DEPS lod_tensor memory enforce)
 cc_library(op_meta_info SRCS ../extension/src/op_meta_info.cc DEPS custom_tensor)
-cc_library(custom_operator SRCS custom_operator.cc DEPS tensor attribute framework_proto op_registry operator dynamic_loader string_helper custom_tensor op_meta_info)
+cc_library(custom_op_utils SRCS ../extension/src/utils.cc DEPS device_context dynamic_loader string_helper)
+cc_library(custom_operator SRCS custom_operator.cc DEPS tensor attribute framework_proto op_registry operator dynamic_loader string_helper custom_tensor op_meta_info custom_op_utils)
 cc_test(custom_tensor_test SRCS custom_tensor_test.cc DEPS custom_tensor glog)
 
 set(FLUID_FRAMEWORK_MODULES proto_desc memory lod_tensor executor data_feed_proto layer dynamic_loader custom_operator)
@@ -365,7 +366,7 @@ endif()
 # New custom op extension mechanism related
 
 # if not deps `layer`, will cause: undefined symbol: _ZN6paddle10imperative7VarBase9name_set_
-set(PADDLE_CUSTOM_OP_MODULES custom_tensor op_meta_info custom_operator layer)
+set(PADDLE_CUSTOM_OP_MODULES custom_tensor op_meta_info custom_operator custom_op_utils layer)
 
 cc_library(paddle_custom_op_shared
     SHARED SRCS custom_operator.cc ../extension/src/tensor.cc ../extension/src/op_meta_info.cc ../extension/src/utils.cc
