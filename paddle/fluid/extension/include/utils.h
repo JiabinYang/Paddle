@@ -34,7 +34,7 @@ void RegisterAllCustomOperator();
 void LoadCustomOperatorLib(const std::string& dso_name);
 
 #ifdef PADDLE_WITH_CUDA
-void GetCurrentStream(const PlaceType& place);
+cudaStream_t GetCurrentStream(const PlaceType& place);
 #endif
 
 }  // namespace paddle
