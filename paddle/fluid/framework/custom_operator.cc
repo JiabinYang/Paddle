@@ -88,10 +88,10 @@ static void RunKernelFunc(const framework::ExecutionContext& ctx,
 
 #ifdef PADDLE_WITH_CUDA
   VLOG(1) << "Call GetCurrentStream";
-  paddle::GetCurrentStream(paddle::PlaceType::kGPU)
+  paddle::GetCurrentStream(paddle::PlaceType::kGPU);
 #endif
 
-      for (auto& in_name : inputs) {
+  for (auto& in_name : inputs) {
     VLOG(1) << "Custom Operator: input name - " << in_name;
     auto* x = ctx.Input<Tensor>(in_name);
     PADDLE_ENFORCE_NOT_NULL(x, platform::errors::NotFound(
