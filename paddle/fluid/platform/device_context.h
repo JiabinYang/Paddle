@@ -719,6 +719,8 @@ class DeviceContextPool {
 
   size_t size() const { return device_contexts_.size(); }
 
+  ~DeviceContextPool() { VLOG(1) << "Destruct DeviceContext Pool"; }
+
  private:
   static DeviceContextPool* pool;
   std::map<Place, std::shared_future<std::unique_ptr<DeviceContext>>>
