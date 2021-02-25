@@ -86,11 +86,6 @@ static void RunKernelFunc(const framework::ExecutionContext& ctx,
   VLOG(1) << "Custom Operator: Start run KernelFunc.";
   std::vector<paddle::Tensor> custom_ins;
 
-#ifdef PADDLE_WITH_CUDA
-  VLOG(1) << "Call GetCurrentStream";
-  paddle::GetCurrentStream(paddle::PlaceType::kGPU);
-#endif
-
   for (auto& in_name : inputs) {
     VLOG(1) << "Custom Operator: input name - " << in_name;
     auto* x = ctx.Input<Tensor>(in_name);
@@ -108,6 +103,10 @@ static void RunKernelFunc(const framework::ExecutionContext& ctx,
   std::vector<boost::any> attrs;
 
   VLOG(1) << "Run ComputeFunc.";
+#ifdef PADDLE_WITH_CUDA
+  VLOG(1) << "Call GetCurrentStream";
+  paddle::GetCurrentStream(paddle::PlaceType::kGPU);
+#endif
   auto outs = func(custom_ins, attrs);
 
   VLOG(1) << "Custom Operator: Share outputs into ExecutionContext.";

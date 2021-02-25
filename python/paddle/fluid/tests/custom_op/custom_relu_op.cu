@@ -36,6 +36,7 @@ __global__ void relu_cuda_backward_kernel(const data_t* dy,
 }
 
 std::vector<paddle::Tensor> relu_cuda_forward(const paddle::Tensor& x) {
+  VLOG(1) << "run in relu_cuda_forward";
   auto out = paddle::Tensor(paddle::PlaceType::kGPU);
   out.reshape(x.shape());
 
