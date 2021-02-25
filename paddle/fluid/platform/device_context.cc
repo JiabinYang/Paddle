@@ -105,6 +105,7 @@ inline void EmplaceDeviceContext(
 
 DeviceContextPool::DeviceContextPool(
     const std::vector<platform::Place>& places) {
+  VLOG(0) << "Construct DeviceContextPool Once";
   PADDLE_ENFORCE_GT(
       places.size(), 0,
       platform::errors::InvalidArgument("The number of platform places should "

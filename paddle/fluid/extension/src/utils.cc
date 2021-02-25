@@ -41,6 +41,7 @@ cudaStream_t GetCurrentStream(const paddle::PlaceType& place) {
   platform::Place inner_place =
       paddle::framework::CustomOpUtils::ConvertEnumPlaceToInnerPlace(place);
   platform::DeviceContextPool& pool = platform::DeviceContextPool::Instance();
+  std::cout << "pool address: " << &pool << std::endl;
   auto* dev_ctx = pool.Get(inner_place);
   return dynamic_cast<platform::CUDADeviceContext*>(dev_ctx)->stream();
 }
