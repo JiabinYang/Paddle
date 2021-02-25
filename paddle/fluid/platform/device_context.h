@@ -698,6 +698,7 @@ class DeviceContextPool {
 
   /*! \brief  Create should only called by Init function */
   static DeviceContextPool& Init(const std::vector<platform::Place>& places) {
+    VLOG(0) << "Init Device here";
     if (pool == nullptr) {
       pool = new DeviceContextPool(places);
     }
