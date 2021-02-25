@@ -20,8 +20,8 @@ import numpy as np
 from paddle.utils.cpp_extension import load, get_build_directory
 from paddle.utils.cpp_extension.extension_utils import run_cmd
 from utils import paddle_includes, extra_compile_args
-from test_custom_relu_op_setup import custom_relu_dynamic, custom_relu_static
-
+# from test_custom_relu_op_setup import custom_relu_dynamic, custom_relu_static
+from test_custom_relu_op_setup import custom_relu_dynamic
 # Because Windows don't use docker, the shared lib already exists in the 
 # cache dir, it will not be compiled again unless the shared lib is removed.
 file = '{}\\custom_relu_module_jit\\custom_relu_module_jit.pyd'.format(
