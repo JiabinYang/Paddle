@@ -81,6 +81,7 @@ PreparedOp PrepareImpl(const NameVarMap<VarType>& ins,
                        const framework::AttributeMap& attrs) {
   VLOG(0) << "GetDeviceContextPool";
   platform::DeviceContextPool& pool = platform::DeviceContextPool::Instance();
+  VLOG(0) << "pool address in tracer: " << &pool;
   auto* dev_ctx = pool.Get(place);
   framework::RuntimeContext ctx({}, {});
 

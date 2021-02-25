@@ -108,7 +108,10 @@ static void RunKernelFunc(const framework::ExecutionContext& ctx,
   paddle::GetCurrentStream(paddle::PlaceType::kGPU);
 #endif
   auto outs = func(custom_ins, attrs);
-
+#ifdef PADDLE_WITH_CUDA
+  VLOG(1) << "Call GetCurrentStream";
+  paddle::GetCurrentStream(paddle::PlaceType::kGPU);
+#endif
   VLOG(1) << "Custom Operator: Share outputs into ExecutionContext.";
   for (size_t i = 0; i < outputs.size(); ++i) {
     auto* true_out = ctx.Output<Tensor>(outputs[i]);
